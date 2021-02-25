@@ -1,6 +1,5 @@
 package com.imedia24.serverside.controller;
 
-import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -27,6 +26,10 @@ import com.imedia24.serverside.exceptions.NotFoundException;
 import com.imedia24.serverside.service.CategoryService;
 import com.imedia24.serverside.service.ProductService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api("CRUD Operations on products")
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/categories/{categoryid}/products")
@@ -37,7 +40,8 @@ public class ProductController {
 	
 	@Autowired
 	CategoryService categoryService;
-
+	
+	@ApiOperation("retreive all Products from a Category by its id")
 	@GetMapping
 	public ResponseEntity<?> readAllProductsByCategoryId(@PathVariable Long categoryid,Pageable page){
 		Category category = categoryService.getCategoryById(categoryid)
@@ -47,7 +51,8 @@ public class ProductController {
 		
 		return ResponseEntity.ok(products);
 	}
-	
+
+	@ApiOperation("retreive a Product by its Id and Category Id")	
 	@GetMapping("/{productid}")
 	public ResponseEntity<?> readAProductByIdAndByCategoryId(@PathVariable Long categoryid,@PathVariable Long productid){
 		Category category = categoryService.getCategoryById(categoryid)
@@ -66,6 +71,7 @@ public class ProductController {
 		return ResponseEntity.ok(product);
 	}
 	
+	@ApiOperation("create a Product in a Category")
 	@PostMapping
 	public ResponseEntity<?> createAProductInACategory(@PathVariable Long categoryid,@RequestBody @Valid ProductDto productD){
 		Category category = categoryService.getCategoryById(categoryid)
@@ -77,6 +83,8 @@ public class ProductController {
 		return ResponseEntity.ok(product);
 	}
 	
+	
+	@ApiOperation("create a Product using its id in a Category")
 	@PutMapping("/{productid}")
 	public ResponseEntity<?> updateAProductInACategory(@PathVariable Long categoryid,@PathVariable Long productid,@RequestBody ProductDto productD){
 		Category category = categoryService.getCategoryById(categoryid)
@@ -95,6 +103,8 @@ public class ProductController {
 		return ResponseEntity.ok(product);
 	}
 	
+	
+	@ApiOperation("delete a product from the program and from the category")
 	@DeleteMapping("/{productid}")
 	public ResponseEntity<?> deleteAProductFromACategory(@PathVariable Long categoryid,@PathVariable Long productid){
 		Category category = categoryService.getCategoryById(categoryid)

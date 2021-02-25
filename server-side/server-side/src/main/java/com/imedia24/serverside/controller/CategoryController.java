@@ -24,8 +24,11 @@ import com.imedia24.serverside.entity.Category;
 import com.imedia24.serverside.exceptions.NotFoundException;
 import com.imedia24.serverside.service.CategoryService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 
+@Api("CRUD Operations on categorie")
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/categories")
@@ -34,14 +37,14 @@ public class CategoryController {
 	@Autowired
 	CategoryService categoryService;
 	
-	
+	@ApiOperation("retreive all categories in the program")
 	@GetMapping
 	public ResponseEntity<?> readAllCategories(Pageable page){
 		Page<Category> categories = categoryService.getAllCategories(page);
 		
 		return ResponseEntity.ok(categories);
 	}
-	
+	@ApiOperation("retreive a Category by its id")
 	@GetMapping("/{id}")
 	public ResponseEntity<?> readACategory(@PathVariable Long id){
 		Category category = categoryService.getCategoryById(id)
@@ -49,14 +52,14 @@ public class CategoryController {
 		
 		return ResponseEntity.ok(category);
 	}
-	
+	@ApiOperation("create a Category")
 	@PostMapping
 	public ResponseEntity<?> createACategory(@RequestBody CategoryDto categoryd){
 		Category category = categoryService.createCategory(categoryd.getName());
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(category);
 	}
-	
+	@ApiOperation("modify a Category")
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateACategory(@PathVariable Long id,@RequestBody CategoryDto categoryd){
 		Category category = categoryService.getCategoryById(id)
@@ -66,7 +69,7 @@ public class CategoryController {
 		
 		return ResponseEntity.ok(category);
 	}
-	
+	@ApiOperation("delete a Category by its id")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteACategory(@PathVariable Long id){
 		Category category = categoryService.getCategoryById(id)
